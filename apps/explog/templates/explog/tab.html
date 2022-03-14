@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF8" />
+        <link rel="stylesheet" href="{{url_for('explog.static', filename='style.css')}}" />
+        <title>Explog</title>
+    </head>
+
+    <body>
+        <form
+        action="{{ url_for('explog.tab') }}"
+        method="POST"
+        novalidate="novalidate"
+        >
+        {{ form.csrf_token }}
+        <!-- {{ form.shot.label }}{{ form.shot(placeholder='integer') }} -->
+        <input id="shot" max="999999" min="1" name="shot" required type="number" value="{{ form.shot.default }}">
+        {% for error in form.shot.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+        {{ form.table.label }}{{ form.table() }}
+        
+        
+        {{ form.btn_move() }}
+        {{ form.btn_prev_page() }}
+        {{ form.btn_prev() }}
+        {{ form.btn_next() }}
+        {{ form.btn_next_page() }}
+        {{ form.btn_last() }}
+        {{ form.btn_save() }}
+
+        <table class="basic">
+            {% for h in form.header %}
+            <tr>
+                {% for e in h%}
+                <th colspan="{{ e[1] }}">{{ e[0] }}</th>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            
+            <tr>
+                {% for e in form.fields %}
+                <td>
+                    {% if not e[1] %}
+                        <input type="hidden" name="record" value="{{ e[0] }}" />
+                        {{ e[0] }}
+                    {% elif e[2] == "text" %}
+                        <input type="text" name="record" value="{{ e[0] }}" size="{{ e[3] }}" />
+                    {% elif e[2] == "textarea" %}
+                        <textarea name="record" cols="{{ e[3] }}" rows="{{ e[4] }}">{{ e[0] }}</textarea>
+                    {% endif %}
+                </td>
+                {% endfor %}
+            </tr>
+        </form>
+
+        <table>
+            <tr>
+                <th>Shot</th>
+                <th>DateTime</th>
+                <th>Comment</th>
+            </tr>
+            {% for oc in coms %}
+            <!--
+            <tr>
+                <td>{{ oc.shot }}</td>
+                <td>{{ oc.dt }}</td>
+                <td>{{ oc.comment }}</td>
+            </tr>
+            -->
+            <tr>
+                {% for e in oc %}
+                    <td>{{ e }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>
