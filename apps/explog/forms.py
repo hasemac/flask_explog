@@ -1,5 +1,6 @@
 from tkinter import Widget
 
+from apps.explog.models import table_selection
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, SelectField, StringField, SubmitField
 from wtforms.validators import DataRequired, NumberRange
@@ -13,8 +14,12 @@ class Total_form(FlaskForm):
             NumberRange(1, 999999, 'incorrect number'),
         ],
     )
-    table = SelectField('Table:', choices=[("sc", "shot comment"), ("rf", "RF-PC")])
-
+    #table = SelectField('Table:', choices=[
+    #    ("sc", "shot comment"), 
+    #    ("rfpc", "RF-PC"),
+    #    ])
+    table = SelectField('Table:', choices=table_selection)
+    
     btn_move        = SubmitField("move")
     btn_prev_page   = SubmitField("prev_page")
     btn_prev        = SubmitField("previous")
@@ -25,33 +30,10 @@ class Total_form(FlaskForm):
     btn_save = SubmitField("save")
     
     # fields
-    # (value, editable, type, width, height)
-    fields = [
-        ("value1", False, "text", ), 
-        ("v2", False, "text", ), 
-        ("v3", True, "textarea", 20, 2)
-        ]    
+    # [(html_name, value, editable, type, width, height),,]
+    fields = [] 
 
     # header
     # [[("title", colspan),,,,],,,,,]
     header = None
-    
-    def set_model(self, model, shot):
-        # tableのヘッダーの作成
-        self.header = [model.header]
-        res = []
-        for e in model.cols:
-            res.append((e[1], 1))
-        self.header.append(res)
 
-        # 入力用fieldsの作成
-        vals = model.get_record(shot)
-        if 0 == len(vals):
-            vals = tuple([shot])+tuple(["" for e in range(len(model.cols)-1)])
-        else:
-            vals = vals[0]
-        
-        self.fields = []
-        for v, e in zip(vals, model.cols):
-            f = tuple([v])+e[2:]
-            self.fields.append(f)
