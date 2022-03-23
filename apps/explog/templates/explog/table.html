@@ -13,8 +13,10 @@
         novalidate="novalidate"
         >
         {{ form.csrf_token }}
+        <table width="95%">
+            <tr><td>
         <!-- {{ form.shot.label }}{{ form.shot(placeholder='integer') }} -->
-        <input id="shot" max="999999" min="1" name="shot" required type="number" value="{{ form.shot.default }}">
+        {{ form.shot.label }}<input id="shot" max="999999" min="1" name="shot" required type="number" value="{{ form.shot.default }}">
         {% for error in form.shot.errors %}
             <span style="color: red;">{{ error }}</span>
         {% endfor %}
@@ -22,14 +24,20 @@
         
         
         {{ form.btn_move() }}
+        </td><td>
         {{ form.btn_prev_page() }}
         {{ form.btn_prev() }}
         {{ form.btn_next() }}
         {{ form.btn_next_page() }}
         {{ form.btn_last() }}
+        </td></tr></table>
+        <table width="95%">
+            <tr><td align="right">
         {{ form.btn_save() }}
+            </td></tr>
+        </table>
 
-        <table class="basic">
+        <table class="basic" width="95%">
             {% for h in form.header %}
             <tr>
                 {% for e in h%}
@@ -42,7 +50,7 @@
                 <!-- 入力行の作成 -->
                 <!-- (html_name, value, editable, type, width, height) -->
                 {% for e in form.fields %}
-                <td>
+                <td  style='background:#ffcccc'>
                     {% if not e.editable %}
                         <input type="hidden" name="{{ e.html }}" value="{{ e.val }}" />
                         {{ e.val }}

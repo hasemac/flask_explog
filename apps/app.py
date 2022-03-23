@@ -29,6 +29,7 @@ def create_app(config_key):
     
     toolbar = DebugToolbarExtension(app)
     
+    
     from apps.explog import views as explog_views
     
     app.register_blueprint(explog_views.explog, url_prefix="/explog")

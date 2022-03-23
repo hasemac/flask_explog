@@ -1,11 +1,13 @@
 table.basic{
+  border:1px solid #000000;
   border-collapse:collapse;
 }
 table.basic th{
-    border:1px solid #000000;
-    background:#ffffff;
+  border:1px solid #000000;
+  background:#3399cc;
 }
 table.basic td{
-    border:1px solid #000000;
-    background:#ffffff;
+  border:1px solid #000000;
+  background:#ffffcc;
 }
+
