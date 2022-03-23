@@ -1,5 +1,10 @@
 #from apps.explog.forms import Shot_table_form
+import threading
+import time
+
+import apps.explog.db_base as dbb
 import apps.explog.forms as frms
+import requests
 from apps.app import db
 from apps.explog.models import Comment, Comment_info, table_class
 from flask import Blueprint, render_template, request, session
@@ -11,12 +16,46 @@ explog = Blueprint(
     static_folder="static",
 )
 
+
+class Thread_shot(threading.Thread):
+    flg = True
+    shot = 1
+    
+
+    #def __init__(self):
+    #    super().__init__()
+        
+    def restart(self):
+        self.flg = True
+        self.start()
+        
+    def run(self):
+        while self.flg:
+            time.sleep(5)
+            s = self.get_current_shot_number()
+            if self.shot != s:
+                self.shot = s
+                for e in table_class:
+                    ndb = dbb.db_table(e[1].Model_class.__tablename__)
+                    ndb.set_new_shot_data(s)
+                    #e[1].regist_class_for_new_shot(self.shot)
+
+    def get_current_shot_number(self):
+        shot = 1
+        uinf = requests.get('http://csv02.exp.triam.kyushu-u.ac.jp/expinfo/shotNumber.txt')
+        shot = int(uinf.text)
+        return shot
+                
+
+th_shot = Thread_shot()
+th_shot.restart()
+
 @explog.route("/")
 def index():
     db.session.query(Comment).all()
     return render_template("explog/index.html")
 
-@explog.route("/tab", methods=['GET', 'POST'])
+@explog.route("/table", methods=['GET', 'POST'])
 def tab():
     numperpage = 10
     sht = 1
@@ -44,6 +83,8 @@ def tab():
             sht += numperpage
         if True == form.btn_prev_page.data:
             sht -= numperpage
+        if True == form.btn_last.data:
+            sht = th_shot.get_current_shot_number()
             
         if True == form.btn_save.data:
             # shtが既にあれば、shtのデータを削除
@@ -82,4 +123,4 @@ def tab():
     
     session["shot"] = sht
     
-    return render_template("explog/tab.html", coms=coms, form=form)
+    return render_template("explog/table.html", coms=coms, form=form)
