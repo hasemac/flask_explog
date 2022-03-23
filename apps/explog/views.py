@@ -11,6 +11,18 @@ explog = Blueprint(
     static_folder="static",
 )
 
+def check_ip(ip: str):
+    res = False
+    dom = ['127.0.0.1', 
+           '192.168.0.',
+           #'192.168.52.', 
+           #'192.168.71.'
+           ]
+    for e in dom:
+        if ip.startswith(e):
+            res = True
+    return res
+              
 @explog.route("/")
 def index():
     db.session.query(Comment).all()
@@ -46,16 +58,20 @@ def tab():
             sht -= numperpage
             
         if True == form.btn_save.data:
-            # shtが既にあれば、shtのデータを削除
-            if 0 != len(tbn.get_record(sht)):
-                db.session.query(tbn.Model_class).filter_by(shot=sht).delete()
-                db.session.commit()
+            
+            ip = request.remote_addr
+            if check_ip(ip):
                 
-            # 新しいクラスを作成して登録
-            c = tbn.get_new_class(request.form)
-            db.session.add(c)
-            db.session.commit()
-            sht += 1
+                # shtが既にあれば、shtのデータを削除
+                if 0 != len(tbn.get_record(sht)):
+                    db.session.query(tbn.Model_class).filter_by(shot=sht).delete()
+                    db.session.commit()
+                    
+                # 新しいクラスを作成して登録
+                c = tbn.get_new_class(request.form)
+                db.session.add(c)
+                db.session.commit()
+                sht += 1
         
         # shotの値の範囲の確認    
         if 0 >= sht:
