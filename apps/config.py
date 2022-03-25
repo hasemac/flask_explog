@@ -14,7 +14,7 @@ class BaseConfig:
 class LocalConfig(BaseConfig):
     SQLALCHEMY_ECHO = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    DEBUG_TB_INTERCEPT_REDIRECTS = False
+    DEBUG_TB_INTERCEPT_REDIRECTS = False # デバッグバーを表示させるときはFalse
 
 # BaseConfigクラスを継承してTestingConfigクラスを作成する
 class TestingConfig(BaseConfig):

@@ -43,7 +43,11 @@ class Thread_shot(threading.Thread):
 
     def get_current_shot_number(self):
         shot = 1
-        uinf = requests.get('http://csv02.exp.triam.kyushu-u.ac.jp/expinfo/shotNumber.txt')
+        # ubuntu_mariadbのゲートウェイはDMZ側に設定している
+        # csv02は192.168.52.2で返されるのでDMZに行ってします。
+        # しかたないのでIP直打ちにする。
+        #uinf = requests.get('http://csv02.exp.triam.kyushu-u.ac.jp/expinfo/shotNumber.txt')        
+        uinf = requests.get('http://192.168.0.253/expinfo/shotNumber.txt')
         shot = int(uinf.text)
         return shot
 
