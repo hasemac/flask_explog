@@ -1,4 +1,6 @@
 import logging
+import signal
+import sys
 from pathlib import Path
 
 from flask import Flask
@@ -8,6 +10,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 
 from apps.config import config
+
+#def handler(signal, frame):
+#    print('CTRL-C pressed!')
+#    sys.exit(0)
+#signal.signal(signal.SIGINT, handler)
+#signal.pause()
 
 # SQLAlchemyのインスタンス化
 db = SQLAlchemy()
