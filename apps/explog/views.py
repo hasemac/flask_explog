@@ -1,4 +1,6 @@
 #from apps.explog.forms import Shot_table_form
+import signal
+import sys
 import threading
 import time
 
@@ -44,7 +46,8 @@ class Thread_shot(threading.Thread):
         uinf = requests.get('http://csv02.exp.triam.kyushu-u.ac.jp/expinfo/shotNumber.txt')
         shot = int(uinf.text)
         return shot
-                
+
+
 
 th_shot = Thread_shot()
 th_shot.restart()

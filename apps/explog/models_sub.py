@@ -132,6 +132,9 @@ class Class_info:
         # Noneを""に変更して、html上でNoneと表示されないようにする。
         q = [tuple([e if None != e else "" for e in a])
              for a in q]
+        # リターンコードは<br>に変換
+        #q = [tuple([e if type(e) != str else e.replace('\n','<br>') for e in a])
+        #     for a in q]
         
         return q
 
