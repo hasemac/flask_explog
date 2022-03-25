@@ -7,7 +7,8 @@ basedir = Path(__file__).parent.parent
 class BaseConfig:
     SECRET_KEY = "2AZSMss3p5QPbcY2hBsJ"
     WTF_CSRF_SECRET_KEY="AuwzyszU5sugKN7KZs6f"
-    SQLALCHEMY_DATABASE_URI = "mysql://aiadmin:zeDm3HLcBx@192.168.0.122/explog"
+    #SQLALCHEMY_DATABASE_URI = "mysql://aiadmin:zeDm3HLcBx@192.168.0.122/explog"
+    SQLALCHEMY_DATABASE_URI = "mysql://aiadmin:zeDm3HLcBx@192.168.0.150/explog"
     
 # BaseConfigクラスを継承してLocalConfigクラスを作成する
 class LocalConfig(BaseConfig):
