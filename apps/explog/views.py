@@ -18,6 +18,16 @@ explog = Blueprint(
     static_folder="static",
 )
 
+def get_current_shot_number():
+    shot = 1
+    # ubuntu_mariadbのゲートウェイはDMZ側に設定している
+    # csv02は192.168.52.2で返されるのでDMZに行ってします。
+    # しかたないのでIP直打ちにする。
+    #uinf = requests.get('http://csv02.exp.triam.kyushu-u.ac.jp/expinfo/shotNumber.txt')        
+    uinf = requests.get('http://192.168.0.253/expinfo/shotNumber.txt')
+    shot = int(uinf.text)
+    return shot
+
 class Thread_shot(threading.Thread):
     flg = True
     shot = 1
@@ -33,24 +43,13 @@ class Thread_shot(threading.Thread):
     def run(self):
         while self.flg:
             time.sleep(5)
-            s = self.get_current_shot_number()
+            s = get_current_shot_number()
             if self.shot != s:
                 self.shot = s
                 for e in table_class:
                     ndb = dbb.db_table(e[1].Model_class.__tablename__)
                     ndb.set_new_shot_data(s)
                     #e[1].regist_class_for_new_shot(self.shot)
-
-    def get_current_shot_number(self):
-        shot = 1
-        # ubuntu_mariadbのゲートウェイはDMZ側に設定している
-        # csv02は192.168.52.2で返されるのでDMZに行ってします。
-        # しかたないのでIP直打ちにする。
-        #uinf = requests.get('http://csv02.exp.triam.kyushu-u.ac.jp/expinfo/shotNumber.txt')        
-        uinf = requests.get('http://192.168.0.253/expinfo/shotNumber.txt')
-        shot = int(uinf.text)
-        return shot
-
 
 
 th_shot = Thread_shot()
@@ -60,8 +59,8 @@ def check_ip(ip: str):
     res = False
     dom = ['127.0.0.1', 
            '192.168.0.',
-           #'192.168.52.', 
-           #'192.168.71.'
+           '192.168.52.', 
+           '192.168.71.'
            ]
     for e in dom:
         if ip.startswith(e):
@@ -76,7 +75,7 @@ def index():
 @explog.route("/table", methods=['GET', 'POST'])
 def tab():
     numperpage = 10
-    sht = 1
+    sht = get_current_shot_number()
     tbn = Comment_info()
 
     form = frms.Total_form()
