@@ -72,7 +72,7 @@ def index():
     db.session.query(Comment).all()
     return render_template("explog/index.html")
 
-@explog.route("/table", methods=['GET', 'POST'])
+@explog.route("/table/", methods=['GET', 'POST'])
 def tab():
     numperpage = 10
     sht = get_current_shot_number()
@@ -101,7 +101,7 @@ def tab():
         if True == form.btn_prev_page.data:
             sht -= numperpage
         if True == form.btn_last.data:
-            sht = th_shot.get_current_shot_number()
+            sht = get_current_shot_number()
             
         if True == form.btn_save.data:
             
