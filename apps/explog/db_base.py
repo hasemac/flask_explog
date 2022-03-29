@@ -59,7 +59,7 @@ class db_table:
         if self.getData(shot) is not None:
             sql = 'DELETE FROM '+self.tablename+' WHERE shot=%s'
             self.cur.execute(sql, [shot])
-            print(sql)
+            #print(sql)
             
         # 新規作成するSQLの作成
         sql = 'INSERT INTO '+self.tablename+' ('

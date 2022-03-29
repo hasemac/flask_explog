@@ -43,13 +43,14 @@ class Thread_shot(threading.Thread):
     def run(self):
         while self.flg:
             #print('shot: ', self.shot)
-            time.sleep(5)
+            time.sleep(4)
             s = get_current_shot_number()
             if self.shot != s:
                 self.shot = s
                 for e in table_class:
                     ndb = dbb.db_table(e[1].Model_class.__tablename__)
-                    ndb.set_new_shot_data(s)
+                    # 更新するのは打ち終わったショットに対してなので、s-1
+                    ndb.set_new_shot_data(s-1)
                     #e[1].regist_class_for_new_shot(self.shot)
 
 
@@ -71,7 +72,7 @@ def check_ip(ip: str):
               
 @explog.route("/")
 def index():
-    db.session.query(Comment).all()
+    #db.session.query(Comment).all()
     return render_template("explog/index.html")
 
 @explog.route("/table/", methods=['GET', 'POST'])
