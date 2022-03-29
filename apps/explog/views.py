@@ -42,6 +42,7 @@ class Thread_shot(threading.Thread):
         
     def run(self):
         while self.flg:
+            #print('shot: ', self.shot)
             time.sleep(5)
             s = get_current_shot_number()
             if self.shot != s:
