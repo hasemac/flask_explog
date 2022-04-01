@@ -21,9 +21,8 @@ explog = Blueprint(
 def get_current_shot_number():
     shot = 1
     # ubuntu_mariadbのゲートウェイはDMZ側に設定している
-    # csv02は192.168.52.2で返されるのでDMZに行ってします。
-    # しかたないのでIP直打ちにする。
-    #uinf = requests.get('http://csv02.exp.triam.kyushu-u.ac.jp/expinfo/shotNumber.txt')        
+    # csv02は192.168.52.2で返されるのでDMZに行ってしまう。
+    # しかたないのでIP直打ちにする。       
     uinf = requests.get('http://192.168.0.253/expinfo/shotNumber.txt')
     shot = int(uinf.text)
     return shot
