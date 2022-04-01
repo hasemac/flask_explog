@@ -7,17 +7,10 @@ import mysql.connector
 class db_table:
     
     con = mysql.connector.connect(
-<<<<<<< HEAD
         user=os.getenv('DB_USER'),
         password=os.getenv('DB_PASS'),
         host=os.getenv('DB_HOST'),
         database=os.getenv('DB_DATABASE'),
-=======
-        user='aiadmin',
-        password='zeDm3HLcBx',
-        host='192.168.0.150',
-        database='explog'
->>>>>>> 8875d65b5e490b4d02d140f222043ec8da8a912c
     )
     
     def __init__(self, tablename):
