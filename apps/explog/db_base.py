@@ -7,10 +7,17 @@ import mysql.connector
 class db_table:
     
     con = mysql.connector.connect(
+<<<<<<< HEAD
         user=os.getenv('DB_USER'),
         password=os.getenv('DB_PASS'),
         host=os.getenv('DB_HOST'),
         database=os.getenv('DB_DATABASE'),
+=======
+        user='aiadmin',
+        password='zeDm3HLcBx',
+        host='192.168.0.150',
+        database='explog'
+>>>>>>> 8875d65b5e490b4d02d140f222043ec8da8a912c
     )
     
     def __init__(self, tablename):
@@ -43,6 +50,7 @@ class db_table:
     def regist_newshot_datetime(self, shot, colname, data):
         # shotの個所は新しいshotに
         # datetimeの個所は現在時刻に
+        #print('shot, col, data', shot, colname, data)
         res = []
         for c, d in zip(colname, data):
             if 'created' == c or 'updated' == c:
@@ -59,6 +67,7 @@ class db_table:
         if self.getData(shot) is not None:
             sql = 'DELETE FROM '+self.tablename+' WHERE shot=%s'
             self.cur.execute(sql, [shot])
+            #print(sql)
             
         # 新規作成するSQLの作成
         sql = 'INSERT INTO '+self.tablename+' ('
