@@ -1,4 +1,5 @@
 import datetime
+import os
 
 import mysql.connector
 
@@ -6,10 +7,10 @@ import mysql.connector
 class db_table:
     
     con = mysql.connector.connect(
-        user='aiadmin',
-        password='zeDm3HLcBx',
-        host='192.168.0.122',
-        database='explog'
+        user=os.getenv('DB_USER'),
+        password=os.getenv('DB_PASS'),
+        host=os.getenv('DB_HOST'),
+        database=os.getenv('DB_DATABASE'),
     )
     
     def __init__(self, tablename):
