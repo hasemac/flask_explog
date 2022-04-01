@@ -1,20 +1,22 @@
 import datetime
 import os
-
 import mysql.connector
 
 
 class db_table:
     
-    con = mysql.connector.connect(
-        user=os.getenv('DB_USER'),
-        password=os.getenv('DB_PASS'),
-        host=os.getenv('DB_HOST'),
-        database=os.getenv('DB_DATABASE'),
-    )
+    con = None
+    cur = None
+    tablename = None
     
     def __init__(self, tablename):
-        self.cur = self.con.cursor()          
+        self.con = mysql.connector.connect(
+            user=os.getenv('DB_USER'),
+            password=os.getenv('DB_PASS'),
+            host=os.getenv('DB_HOST'),
+            database=os.getenv('DB_DATABASE'),
+        )
+        self.cur = self.con.cursor()   
         self.tablename = tablename
 
     def close(self):
